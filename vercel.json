@@ -6,7 +6,12 @@
     },
     "backend": {
       "root": "backend/",
-      "entrypoint": "app.main:app"
+      "framework": "fastapi",
+      "entrypoint": "app.main:app",
+      "buildCommand": "python -m app.setup_model",
+      "includeFiles": [
+        "models/**"
+      ]
     }
   },
   "rewrites": [
