@@ -6,12 +6,8 @@
     },
     "backend": {
       "root": "backend/",
-      "framework": "fastapi",
-      "entrypoint": "app.main:app",
-      "buildCommand": "python -m app.setup_model",
-      "includeFiles": [
-        "models/**"
-      ]
+      "runtime": "container",
+      "entrypoint": "Dockerfile.vercel"
     }
   },
   "rewrites": [

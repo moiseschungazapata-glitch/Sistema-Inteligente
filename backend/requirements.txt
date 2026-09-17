@@ -9,4 +9,3 @@ numpy>=2,<3
 scikit-learn>=1.6,<2
 joblib>=1.4,<2
 pytest>=8,<10
--r requirements-face.txt

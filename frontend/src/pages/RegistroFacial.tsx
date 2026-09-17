@@ -36,8 +36,7 @@ export default function RegistroFacial({ profile }: { profile: Profile }) {
       })
     return () => {
       active = false
-    }
-  }, [page])
+   }, [page])
   async function action(work: () => Promise<void>) {
     setBusy(true)
     setError('')
