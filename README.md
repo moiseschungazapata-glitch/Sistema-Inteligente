@@ -1,51 +1,88 @@
-# Sistema Inteligente
+# Sistema Inteligente de Reconocimiento Facial
 
-Base inicial del proyecto con un frontend construido con React, TypeScript y Vite.
+Implementación del proyecto **Reconocimiento Facial y Análisis de Probabilidades**:
+React + Vite + TypeScript + Tailwind CSS, FastAPI, Supabase/PostgreSQL,
+OpenCV + InsightFace/ArcFace y scikit-learn.
 
-## Estado actual
+## Funciones implementadas
 
-- El frontend muestra la pantalla de bienvenida y el contador de la plantilla de Vite.
-- Están declaradas dependencias para peticiones HTTP (Axios), iconos (Lucide), cámara web (React Webcam) y gráficos (Recharts); todavía no se utilizan en la aplicación.
-- Este repositorio todavía no contiene un backend, una base de datos ni modelos de inteligencia artificial.
+- Inicio de sesión con Supabase Auth y roles administrador, operador y consulta.
+- Registro de personas, consentimiento, edición, revocación y eliminación.
+- Captura desde cámara o archivo; validación de calidad y embeddings faciales.
+- Comparación por similitud coseno, umbral configurable e historial.
+- Dashboard con estadísticas reales de la base de datos.
+- Dataset verificado, entrenamiento de regresión logística, calibración y métricas.
+- Auditoría, RLS, funciones SQL transaccionales y comando de retención.
+
+No contiene cuentas, datos biométricos ni resultados de ejemplo cargados en producción.
+Sin configuración, las operaciones muestran un error explícito: no se simula Supabase
+ni un reconocimiento. Los datos sintéticos existen únicamente dentro de las pruebas.
 
 ## Estructura
 
 ```text
-frontend/
-  public/             Recursos públicos
-  src/                Componentes, estilos y recursos de React
-  package.json        Dependencias y comandos
-  package-lock.json   Versiones de dependencias
-  vite.config.ts      Configuración de Vite
+frontend/src/
+  components/   CameraCapture, FaceResultCard, SimilarityBar, ProbabilityChart
+  pages/        Dashboard, RegistroFacial, Reconocimiento, Probabilidades, Historial
+  services/     Cliente HTTP de FastAPI
+  types/        Contratos TypeScript
+backend/
+  app/
+    core/       Configuración y autorización
+    database/   Conexión Supabase y schema.sql
+    models/     Modelos de respuesta
+    schemas/    Validación de entradas
+    services/   Procesamiento facial, embeddings y ML
+    api/routes/ Endpoints REST
+  models/       Pesos faciales y artefactos ML locales (fuera de Git)
+  tests/        Pruebas del backend
 ```
 
-## Ejecutar localmente
+Se sigue la estructura detallada del PDF. Se añaden los archivos necesarios para
+autenticación, SQL, configuración y pruebas. La persistencia utiliza la API de
+Supabase desde FastAPI; no es necesario un ORM ni exponer conexiones PostgreSQL
+al navegador. Los modelos de `app/models` son contratos de respuesta Pydantic.
 
-Requisito: Node.js 24 LTS con npm.
+## Puesta en marcha
 
-```bash
-git clone https://github.com/moiseschungazapata-glitch/Sistema-Inteligente.git
-cd Sistema-Inteligente/frontend
+1. Ejecuta `backend/app/database/schema.sql` en el SQL Editor de Supabase.
+2. Completa `backend/.env` según `backend/.env.example`; no compartas sus secretos.
+3. Crea un usuario en Supabase Authentication y asígnale un perfil con
+   `python -m app.manage_user` (instrucciones en `backend/README.md`).
+4. Instala las dependencias del backend y descarga los pesos con
+   `python -m app.setup_model`. Configura un umbral evaluado en `FACE_THRESHOLD`.
+5. Arranca FastAPI y el frontend en terminales separadas.
+
+Backend, desde `backend`:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+```
+
+Frontend, desde `frontend` (Node.js 24):
+
+```powershell
 npm ci
 npm run dev
 ```
 
-Abre la dirección que Vite indique en la terminal.
+El frontend usa `http://localhost:8000/api` de forma predeterminada. Puedes cambiarlo
+con `VITE_API_URL` en `frontend/.env`. Nunca uses variables `VITE_` para claves secretas.
 
-## Verificaciones y compilación
+## Verificación
 
-Desde `frontend`:
+Frontend: `npm run lint` y `npm run build`.
+Backend: desde `backend`, `.\.venv\Scripts\python.exe -m pytest -q`.
 
-```bash
-npm run lint
-npm run build
-npm run preview
-```
+Se verificaron localmente las restricciones y funciones SQL con PostgreSQL embebido,
+incluida la denegación de acceso a roles del navegador. Esto no sustituye la prueba
+de integración en tu Supabase. Consulta `backend/README.md` para configuración,
+modelo facial, dataset, calibración, retención y límites del sistema.
 
-La compilación genera `frontend/dist`. El comando `preview` permite revisar esa compilación localmente.
+## Límites de la entrega
 
-## Archivos locales
-
-Git excluye las dependencias (`node_modules`), el entorno Python local (`venv`), las compilaciones y los archivos `.env`. Las dependencias del frontend se reinstalan con `npm ci`. El entorno Python no es necesario para ejecutar el frontend actual.
-
-Subir el código a GitHub no publica automáticamente la aplicación como sitio web.
+El código está implementado, pero conectar tu Supabase requiere credenciales y
+ejecutar el SQL. Evaluar el umbral, entrenar ML y medir precisión requiere ejemplos
+reales consentidos y etiquetas verificadas. No se ha desplegado el sistema en internet.
+Los pesos de InsightFace tienen condiciones de uso distintas del código:
+https://github.com/deepinsight/insightface#license

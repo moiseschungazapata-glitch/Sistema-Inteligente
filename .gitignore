@@ -3,6 +3,7 @@ node_modules/
 dist/
 dist-ssr/
 coverage/
+tmp/
 *.tsbuildinfo
 
 # Local Python environments and caches
