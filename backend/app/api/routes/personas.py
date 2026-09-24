@@ -10,6 +10,14 @@ class PersonaCreate(BaseModel):
     documento: str | None = None
 
 
+def _normalizar_persona(persona: dict) -> dict:
+    """Expone el nombre que usa el frontend sin cambiar el esquema de Supabase."""
+    return {
+        **persona,
+        "nombre_completo": persona.get("nombre", ""),
+    }
+
+
 @router.post("/personas")
 def crear_persona(persona: PersonaCreate):
     try:
@@ -17,7 +25,7 @@ def crear_persona(persona: PersonaCreate):
             supabase
             .table("personas")
             .insert({
-                "nombre_completo": persona.nombre_completo,
+                "nombre": persona.nombre_completo,
                 "documento": persona.documento
             })
             .execute()
@@ -26,7 +34,7 @@ def crear_persona(persona: PersonaCreate):
         return {
             "status": "ok",
             "message": "Persona registrada correctamente",
-            "data": response.data
+            "data": [_normalizar_persona(item) for item in response.data]
         }
 
     except Exception as e:
@@ -49,7 +57,7 @@ def test_insert():
             supabase
             .table("personas")
             .insert({
-                "nombre_completo": "Prueba Python",
+                "nombre": "Prueba Python",
                 "documento": "88888888"
             })
             .execute()
@@ -73,13 +81,13 @@ def listar_personas():
         response = (
             supabase
             .table("personas")
-            .select("*")
+            .select("id, nombre, documento, activo")
             .execute()
         )
 
         return {
             "status": "ok",
-            "data": response.data
+            "data": [_normalizar_persona(item) for item in response.data]
         }
 
     except Exception as e:

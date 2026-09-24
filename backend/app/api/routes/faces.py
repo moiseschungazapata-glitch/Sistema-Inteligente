@@ -12,7 +12,7 @@ router = APIRouter(
 
 @router.post("/{persona_id}/rostro")
 async def registrar_rostro(
-    persona_id: int,
+    persona_id: str,
     file: UploadFile = File(...)
 ):
     try:
@@ -20,7 +20,7 @@ async def registrar_rostro(
         persona = (
             supabase
             .table("personas")
-            .select("id, nombre_completo, activo")
+            .select("id, activo")
             .eq("id", persona_id)
             .execute()
         )

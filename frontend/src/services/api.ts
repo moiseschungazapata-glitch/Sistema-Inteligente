@@ -60,7 +60,7 @@ export async function registrarPersona(
 }
 
 export async function registrarRostro(
-  personaId: number,
+  personaId: string,
   file: File
 ) {
   const formData = new FormData();

@@ -134,7 +134,7 @@ async def reconocer_rostro(
                 supabase
                 .table("personas")
                 .select(
-                    "id, nombre_completo, documento, activo"
+                    "id, nombre, documento, activo"
                 )
                 .eq(
                     "id",
@@ -145,7 +145,11 @@ async def reconocer_rostro(
 
 
             if persona_response.data:
-                persona = persona_response.data[0]
+                persona_row = persona_response.data[0]
+                persona = {
+                    **persona_row,
+                    "nombre_completo": persona_row.get("nombre", ""),
+                }
 
 
         # =====================================================

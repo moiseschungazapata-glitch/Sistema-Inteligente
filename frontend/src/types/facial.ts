@@ -1,5 +1,5 @@
 export interface Persona {
-  id: number;
+  id: string;
   nombre_completo: string;
   documento?: string;
   activo: boolean;
@@ -20,7 +20,7 @@ export interface ProbabilityResult {
 
 export interface RecognitionLog {
   id: number;
-  persona_id?: number | null;
+  persona_id?: string | null;
   similarity?: number;
   distance?: number;
   resultado: string;

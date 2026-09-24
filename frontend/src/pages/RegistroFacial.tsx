@@ -17,7 +17,7 @@ import {
 function RegistroFacial() {
   const [nombre, setNombre] = useState("");
   const [documento, setDocumento] = useState("");
-  const [personaId, setPersonaId] = useState<number | null>(null);
+  const [personaId, setPersonaId] = useState<string | null>(null);
   const [mensaje, setMensaje] = useState("");
   const [archivo, setArchivo] = useState<File | null>(null);
 
