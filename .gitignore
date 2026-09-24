@@ -1,0 +1,29 @@
+# Configuraci�n privada
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Frontend
+node_modules/
+dist/
+build/
+
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# Datasets
+datasets/
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
