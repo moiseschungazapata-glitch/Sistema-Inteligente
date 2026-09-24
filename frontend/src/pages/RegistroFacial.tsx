@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import CameraCapture from "../components/CameraCapture";
 import {
-  getPersonas,
   registrarPersona,
   registrarRostro,
 } from "../services/api";
