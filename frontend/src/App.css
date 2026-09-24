@@ -1328,3 +1328,105 @@ body {
   .dashboard-hero h3 { font-size: 22px; }
   .result-metrics { gap: 8px; }
 }
+
+/* ================================
+   SIDEBAR PLEGABLE
+================================ */
+
+.sidebar-toggle-button {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border: 1px solid #dce3ed;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #475467;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.sidebar-toggle-button:hover {
+  border-color: #a9c1eb;
+  background: #f5f8ff;
+  color: #2563eb;
+}
+
+.topbar {
+  justify-content: flex-start;
+}
+
+.topbar-title-row {
+  margin-left: 2px;
+}
+
+.topbar > .status {
+  margin-left: auto;
+}
+
+.sidebar,
+.main-content {
+  transition: width 0.25s ease, margin-left 0.25s ease, transform 0.25s ease;
+}
+
+.app-sidebar-collapsed .sidebar {
+  width: 84px;
+}
+
+.app-sidebar-collapsed .main-content {
+  width: calc(100% - 84px);
+  margin-left: 84px;
+}
+
+.app-sidebar-collapsed .logo {
+  justify-content: center;
+  padding: 0;
+}
+
+.app-sidebar-collapsed .logo > div:last-child,
+.app-sidebar-collapsed .sidebar-footer span {
+  display: none;
+}
+
+.app-sidebar-collapsed .sidebar-nav {
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.app-sidebar-collapsed .nav-item {
+  justify-content: center;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.app-sidebar-collapsed .nav-item span {
+  display: none;
+}
+
+.app-sidebar-collapsed .sidebar-footer {
+  align-items: center;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.kpi-card .kpi-icon {
+  background: currentColor;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle-button {
+    display: none;
+  }
+
+  .app-sidebar-collapsed .sidebar {
+    width: min(280px, 82vw);
+  }
+
+  .app-sidebar-collapsed .main-content {
+    width: 100%;
+    margin-left: 0;
+  }
+}

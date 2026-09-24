@@ -4,6 +4,8 @@ import {
   BarChart3,
   History,
   LayoutDashboard,
+  PanelLeftClose,
+  PanelLeftOpen,
   ScanFace,
   UserRoundPlus,
 } from "lucide-react";
@@ -19,6 +21,7 @@ import "./App.css";
 function App() {
   const [pagina, setPagina] = useState("dashboard");
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [sidebarColapsado, setSidebarColapsado] = useState(false);
 
   const cambiarPagina = (nuevaPagina: string) => {
     setPagina(nuevaPagina);
@@ -48,13 +51,9 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div className={sidebarColapsado ? "app app-sidebar-collapsed" : "app"}>
       <aside
-        className={
-          menuAbierto
-            ? "sidebar sidebar-open"
-            : "sidebar"
-        }
+        className={`${menuAbierto ? "sidebar sidebar-open" : "sidebar"}${sidebarColapsado ? " sidebar-collapsed" : ""}`}
       >
 
         <div className="logo">
@@ -150,6 +149,22 @@ function App() {
       <main className="main-content">
 
         <header className="topbar">
+
+          <button
+            className="sidebar-toggle-button"
+            aria-label={
+              sidebarColapsado
+                ? "Expandir menú"
+                : "Colapsar menú"
+            }
+            onClick={() => setSidebarColapsado(!sidebarColapsado)}
+          >
+            {sidebarColapsado ? (
+              <PanelLeftOpen size={19} />
+            ) : (
+              <PanelLeftClose size={19} />
+            )}
+          </button>
 
           <button
             className="mobile-menu-button"
