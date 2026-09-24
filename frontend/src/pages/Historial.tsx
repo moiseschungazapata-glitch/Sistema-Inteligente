@@ -30,9 +30,10 @@ function Historial() {
   }, []);
 
   useEffect(() => {
-    // La carga inicial sincroniza el componente con el historial remoto.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    cargarHistorial();
+    // Mantiene el historial sincronizado mientras la vista está abierta.
+    void cargarHistorial();
+    const intervalo = window.setInterval(() => void cargarHistorial(), 5000);
+    return () => window.clearInterval(intervalo);
   }, [cargarHistorial]);
 
   const registrosFiltrados = historial.filter((registro) => {

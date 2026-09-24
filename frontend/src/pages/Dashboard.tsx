@@ -5,8 +5,42 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+
+import { obtenerResumenDashboard } from "../services/api";
+import type { DashboardSummary } from "../types/facial";
+
+const resumenInicial: DashboardSummary = {
+  personas: 0,
+  reconocimientos: 0,
+  coincidencias: 0,
+  precision: null,
+};
 
 function Dashboard() {
+  const [resumen, setResumen] = useState(resumenInicial);
+  const [error, setError] = useState("");
+
+  const cargarResumen = useCallback(async () => {
+    try {
+      const data = await obtenerResumenDashboard();
+      setResumen(data);
+      setError("");
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "No se pudo actualizar el dashboard"
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    void cargarResumen();
+    const intervalo = window.setInterval(() => void cargarResumen(), 5000);
+    return () => window.clearInterval(intervalo);
+  }, [cargarResumen]);
+
   return (
     <div className="page-view dashboard-view">
       <div className="page-title dashboard-title">
@@ -30,7 +64,7 @@ function Dashboard() {
             <span className="kpi-icon"><Users size={19} /></span>
             <span className="kpi-label">PERSONAS</span>
           </div>
-          <strong>0</strong>
+          <strong>{resumen.personas}</strong>
           <span className="kpi-description">Perfiles registrados</span>
         </div>
 
@@ -39,7 +73,7 @@ function Dashboard() {
             <span className="kpi-icon"><ScanIcon /></span>
             <span className="kpi-label">PROCESOS</span>
           </div>
-          <strong>0</strong>
+          <strong>{resumen.reconocimientos}</strong>
           <span className="kpi-description">Reconocimientos realizados</span>
         </div>
 
@@ -48,7 +82,7 @@ function Dashboard() {
             <span className="kpi-icon"><CheckCircle2 size={19} /></span>
             <span className="kpi-label">COINCIDENCIAS</span>
           </div>
-          <strong>0</strong>
+          <strong>{resumen.coincidencias}</strong>
           <span className="kpi-description">Identidades confirmadas</span>
         </div>
 
@@ -57,10 +91,12 @@ function Dashboard() {
             <span className="kpi-icon"><Activity size={19} /></span>
             <span className="kpi-label">PRECISIÓN</span>
           </div>
-          <strong>--</strong>
-          <span className="kpi-description">Pendiente de evaluación</span>
+          <strong>{resumen.precision === null ? "--" : `${resumen.precision.toFixed(1)}%`}</strong>
+          <span className="kpi-description">Coincidencias confirmadas</span>
         </div>
       </div>
+
+      {error && <div className="message-box message-info">{error}</div>}
 
       <section className="dashboard-hero">
         <div className="dashboard-hero-content">

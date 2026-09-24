@@ -1,5 +1,6 @@
 import type {
   Persona,
+  DashboardSummary,
   RecognitionLog,
   RecognitionResult,
 } from "../types/facial";
@@ -18,6 +19,18 @@ export async function getPersonas(): Promise<Persona[]> {
 
   if (!response.ok) {
     throw new Error("No se pudieron obtener las personas");
+  }
+
+  const result = await response.json();
+  return result.data ?? [];
+}
+
+export async function obtenerResumenDashboard(): Promise<DashboardSummary> {
+  const response = await fetch(`${API_URL}/api/dashboard/summary`);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => null);
+    throw new Error(error?.detail || "No se pudo obtener el resumen");
   }
 
   return response.json();

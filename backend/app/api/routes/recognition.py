@@ -11,6 +11,36 @@ router = APIRouter(
 )
 
 
+@router.get("/historial")
+def obtener_historial():
+    try:
+        response = (
+            supabase
+            .table("recognition_logs")
+            .select("*")
+            .order("created_at", desc=True)
+            .execute()
+        )
+        return [
+            {
+                **registro,
+                "similarity": registro.get("similarity", registro.get("similitud")),
+                "distance": registro.get("distance", registro.get("distancia")),
+                "resultado": registro.get(
+                    "resultado",
+                    registro.get("estado")
+                    or ("coincide" if registro.get("coincide") else "no_coincide"),
+                ),
+            }
+            for registro in (response.data or [])
+        ]
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"No se pudo obtener el historial: {error}",
+        )
+
+
 # Umbral temporal.
 # Más adelante será ajustado mediante pruebas reales.
 UMBRAL_SIMILITUD = 0.50
@@ -162,11 +192,11 @@ async def reconocer_rostro(
                 if coincide
                 else None
             ),
-            "similarity": best_match["similarity"],
-            "distance": distance,
+            "similitud": best_match["similarity"],
+            "distancia": distance,
             "umbral": UMBRAL_SIMILITUD,
             "coincide": coincide,
-            "resultado": resultado,
+            "estado": resultado,
             "confianza": None,
             "modelo": best_match["modelo"],
             "probabilidad_calibrada": None

@@ -8,11 +8,16 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { reconocerRostro as analizarRostro } from "../services/api";
+import type { RecognitionResult } from "../types/facial";
+
 const Reconocimiento = () => {
   const webcamRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [capturado, setCapturado] = useState<string | null>(null);
-  const [reconocido, setReconocido] = useState(false);
+  const [resultado, setResultado] = useState<RecognitionResult | null>(null);
+  const [procesando, setProcesando] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (capturado) return;
@@ -49,17 +54,35 @@ const Reconocimiento = () => {
       canvas.height = video.videoHeight;
       canvas.getContext("2d")?.drawImage(video, 0, 0);
       setCapturado(canvas.toDataURL("image/jpeg"));
-      setReconocido(false);
+      setResultado(null);
+      setError("");
     }
   };
 
-  const reconocerRostro = () => {
+  const reconocerRostro = async () => {
     if (!capturado) {
-      alert("Primero debes capturar un rostro.");
+      setError("Primero debes capturar un rostro.");
       return;
     }
 
-    setReconocido(true);
+    setProcesando(true);
+    setError("");
+
+    try {
+      const response = await fetch(capturado);
+      const blob = await response.blob();
+      const file = new File([blob], "rostro.jpg", { type: "image/jpeg" });
+      const data = await analizarRostro(file);
+      setResultado(data);
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "No se pudo realizar el reconocimiento."
+      );
+    } finally {
+      setProcesando(false);
+    }
   };
 
   return (
@@ -104,7 +127,7 @@ const Reconocimiento = () => {
             <button className="primary-button" onClick={capturarRostro}>
               <Camera size={17} /> Capturar rostro
             </button>
-            <button className="secondary-button" onClick={reconocerRostro}>
+            <button className="secondary-button" onClick={reconocerRostro} disabled={procesando}>
               <ScanFace size={17} /> Reconocer
             </button>
           </div>
@@ -125,7 +148,7 @@ const Reconocimiento = () => {
             </div>
           </div>
 
-          {!reconocido ? (
+          {!resultado ? (
             <div className="result-empty">
               <span className="result-empty-icon"><ScanFace size={34} /></span>
               <strong>Listo para analizar</strong>
@@ -133,34 +156,36 @@ const Reconocimiento = () => {
             </div>
           ) : (
             <div className="result-content">
-              <div className="match-banner">
-                <CheckCircle2 size={21} />
+              <div className={`match-banner ${resultado.coincide ? "" : "match-banner-failed"}`}>
+                {resultado.coincide ? <CheckCircle2 size={21} /> : <Info size={21} />}
                 <div>
-                  <strong>Coincidencia encontrada</strong>
-                  <span>La identidad supera el umbral configurado.</span>
+                  <strong>{resultado.coincide ? "Coincidencia encontrada" : "Sin coincidencia"}</strong>
+                  <span>{resultado.coincide ? "La identidad supera el umbral configurado." : "El rostro no supera el umbral configurado."}</span>
                 </div>
-                <span className="match-badge">CONFIRMADA</span>
+                <span className="match-badge">{resultado.coincide ? "CONFIRMADA" : "NO IDENTIFICADA"}</span>
               </div>
 
               <div className="identified-person">
                 <span>PERSONA IDENTIFICADA</span>
-                <strong>Carlos Pérez</strong>
-                <small>ID de perfil · 0001</small>
+                <strong>{resultado.persona?.nombre_completo ?? "No identificada"}</strong>
+                <small>{resultado.persona ? `ID de perfil · ${resultado.persona.id}` : "No existe una coincidencia registrada"}</small>
               </div>
 
               <div className="result-metrics">
-                <Metric label="Similitud" value="87%" accent="blue" />
-                <Metric label="Distancia" value="0.26" />
-                <Metric label="Umbral" value="0.75" />
-                <Metric label="Probabilidad" value="93%" accent="green" />
+                <Metric label="Similitud" value={`${(resultado.similitud * 100).toFixed(2)}%`} accent="blue" />
+                <Metric label="Distancia" value={resultado.distancia?.toFixed(4) ?? "--"} />
+                <Metric label="Umbral" value={resultado.umbral.toFixed(2)} />
+                <Metric label="Modelo" value={resultado.modelo ?? "--"} accent="green" />
               </div>
 
               <div className="confidence-line">
-                <div><span>Nivel de confianza</span><strong>Alto</strong></div>
-                <div className="confidence-track"><span style={{ width: "87%" }} /></div>
+                <div><span>Nivel de similitud</span><strong>{(resultado.similitud * 100).toFixed(1)}%</strong></div>
+                <div className="confidence-track"><span style={{ width: `${Math.max(0, Math.min(resultado.similitud * 100, 100))}%` }} /></div>
               </div>
             </div>
           )}
+
+          {error && <div className="message-box message-info">{error}</div>}
         </section>
       </div>
     </div>

@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.routes.supabase_health import router as supabase_health_router
 from app.api.routes.recognition import router as recognition_router
+from app.api.routes.dashboard import router as dashboard_router
 
 
 app = FastAPI(
@@ -43,6 +44,10 @@ app.include_router(
 
 app.include_router(
     recognition_router
+    )
+
+app.include_router(
+    dashboard_router
     )
 
 app.include_router(

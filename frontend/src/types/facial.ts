@@ -10,6 +10,8 @@ export interface RecognitionResult {
   coincide: boolean;
   similitud: number;
   umbral: number;
+  distancia?: number;
+  modelo?: string;
   persona?: Persona | null;
 }
 
@@ -26,4 +28,11 @@ export interface RecognitionLog {
   resultado: string;
   confianza?: number;
   created_at: string;
+}
+
+export interface DashboardSummary {
+  personas: number;
+  reconocimientos: number;
+  coincidencias: number;
+  precision: number | null;
 }
