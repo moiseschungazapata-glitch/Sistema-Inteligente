@@ -38,7 +38,16 @@ function RegistroFacial() {
           documento
         );
 
-      const persona = response.data;
+      const personas = response.data;
+      const persona = Array.isArray(personas)
+        ? personas[0]
+        : personas;
+
+      if (!persona?.id) {
+        throw new Error(
+          "La persona se creó, pero no se recibió su ID."
+        );
+      }
 
       setPersonaId(persona.id);
 

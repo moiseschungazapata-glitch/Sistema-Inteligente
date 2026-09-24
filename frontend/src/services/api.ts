@@ -4,9 +4,12 @@ import type {
   RecognitionResult,
 } from "../types/facial";
 
-const API_URL =
+const API_URL = (
   import.meta.env.VITE_API_URL ||
-  "http://127.0.0.1:8001";
+  "http://127.0.0.1:8001"
+)
+  .replace(/\/+$/, "")
+  .replace(/\/api$/, "");
 
 export async function getPersonas(): Promise<Persona[]> {
   const response = await fetch(
@@ -41,7 +44,16 @@ export async function registrarPersona(
   );
 
   if (!response.ok) {
-    throw new Error("No se pudo registrar la persona");
+    let detail = "No se pudo registrar la persona";
+
+    try {
+      const error = await response.json();
+      detail = error.detail || detail;
+    } catch {
+      // La respuesta no tenía un cuerpo JSON válido.
+    }
+
+    throw new Error(detail);
   }
 
   return response.json();
