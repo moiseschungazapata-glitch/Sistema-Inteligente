@@ -1,0 +1,26 @@
+# Contraseñas y configuración privada
+.env
+.env.*
+!.env.example
+
+# Frontend
+node_modules/
+dist/
+build/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Visual Studio
+.vs/
+bin/
+obj/
+datasets/
+# Archivos locales
+*.db
+*.sqlite
+*.sqlite3 que fue
