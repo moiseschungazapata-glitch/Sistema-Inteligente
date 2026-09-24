@@ -1113,9 +1113,11 @@ body {
 
 .kpi-card-top {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  justify-content: center;
+  gap: 11px;
+  margin-bottom: 16px;
 }
 
 .kpi-icon {
@@ -1131,11 +1133,25 @@ body {
   opacity: 0.9;
 }
 
+.kpi-card {
+  text-align: center;
+}
+
+.kpi-card .kpi-icon {
+  margin: 0 auto;
+}
+
+.kpi-card .kpi-icon svg {
+  display: block;
+  transform: translateY(2px);
+}
+
 .kpi-label {
   color: #98a2b3;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.1em;
+  text-align: center;
 }
 
 .kpi-card strong {
@@ -1150,6 +1166,7 @@ body {
   margin-top: 10px;
   color: var(--muted);
   font-size: 12px;
+  text-align: center;
 }
 
 .dashboard-hero {
