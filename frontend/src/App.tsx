@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Activity,
   BarChart3,
   History,
   LayoutDashboard,
+  Moon,
   PanelLeftClose,
   PanelLeftOpen,
   ScanFace,
+  Sun,
   UserRoundPlus,
 } from "lucide-react";
 
@@ -22,6 +24,18 @@ function App() {
   const [pagina, setPagina] = useState("dashboard");
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [sidebarColapsado, setSidebarColapsado] = useState(false);
+  const [tema, setTema] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "light";
+
+    return localStorage.getItem("sistema-tema") === "dark"
+      ? "dark"
+      : "light";
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = tema;
+    localStorage.setItem("sistema-tema", tema);
+  }, [tema]);
 
   const cambiarPagina = (nuevaPagina: string) => {
     setPagina(nuevaPagina);
@@ -65,6 +79,22 @@ function App() {
             <h2>Reconocimiento</h2>
             <span>Facial IA</span>
           </div>
+
+          <button
+            className="sidebar-toggle-button"
+            aria-label={
+              sidebarColapsado
+                ? "Expandir menú"
+                : "Colapsar menú"
+            }
+            onClick={() => setSidebarColapsado(!sidebarColapsado)}
+          >
+            {sidebarColapsado ? (
+              <PanelLeftOpen size={18} />
+            ) : (
+              <PanelLeftClose size={18} />
+            )}
+          </button>
         </div>
 
         <nav className="sidebar-nav">
@@ -132,6 +162,20 @@ function App() {
         </nav>
 
         <div className="sidebar-footer">
+          <button
+            className="theme-toggle-button"
+            aria-label={
+              tema === "dark"
+                ? "Cambiar a modo claro"
+                : "Cambiar a modo oscuro"
+            }
+            onClick={() =>
+              setTema(tema === "dark" ? "light" : "dark")
+            }
+          >
+            {tema === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            <span>{tema === "dark" ? "Modo claro" : "Modo oscuro"}</span>
+          </button>
           <span>Sistema IA</span>
           <small>v1.0.0</small>
         </div>
@@ -149,22 +193,6 @@ function App() {
       <main className="main-content">
 
         <header className="topbar">
-
-          <button
-            className="sidebar-toggle-button"
-            aria-label={
-              sidebarColapsado
-                ? "Expandir menú"
-                : "Colapsar menú"
-            }
-            onClick={() => setSidebarColapsado(!sidebarColapsado)}
-          >
-            {sidebarColapsado ? (
-              <PanelLeftOpen size={19} />
-            ) : (
-              <PanelLeftClose size={19} />
-            )}
-          </button>
 
           <button
             className="mobile-menu-button"

@@ -1430,3 +1430,207 @@ body {
     margin-left: 0;
   }
 }
+
+/* El control pertenece al encabezado del menú lateral. */
+.logo .sidebar-toggle-button {
+  display: inline-flex;
+  margin-left: auto;
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #c9d5ea;
+}
+
+.logo .sidebar-toggle-button:hover {
+  border-color: rgba(158, 193, 255, 0.55);
+  background: rgba(96, 165, 250, 0.16);
+  color: #ffffff;
+}
+
+.sidebar-footer {
+  gap: 10px;
+}
+
+.theme-toggle-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #c9d5ea;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.theme-toggle-button:hover {
+  border-color: rgba(158, 193, 255, 0.45);
+  background: rgba(96, 165, 250, 0.14);
+  color: #ffffff;
+}
+
+.app-sidebar-collapsed .logo {
+  height: 136px;
+  flex-direction: column;
+  gap: 13px;
+  padding: 16px 0;
+}
+
+.app-sidebar-collapsed .logo .sidebar-toggle-button {
+  margin-left: 0;
+}
+
+.app-sidebar-collapsed .theme-toggle-button {
+  width: 40px;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.app-sidebar-collapsed .theme-toggle-button span {
+  display: none;
+}
+
+/* ================================
+   TEMA OSCURO
+================================ */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --app-bg: #0a1220;
+  --surface: #111c2e;
+  --surface-muted: #162238;
+  --ink: #f4f7fb;
+  --muted: #9aa8bd;
+  --line: #263651;
+  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.18);
+  --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.24);
+}
+
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] .app {
+  background: var(--app-bg);
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .topbar {
+  background: rgba(15, 26, 44, 0.94);
+  border-bottom-color: var(--line);
+}
+
+:root[data-theme="dark"] .topbar h1,
+:root[data-theme="dark"] .page-title h2,
+:root[data-theme="dark"] .card-heading h3,
+:root[data-theme="dark"] .kpi-card strong,
+:root[data-theme="dark"] .identified-person strong,
+:root[data-theme="dark"] .result-metric strong,
+:root[data-theme="dark"] .parameter-label label,
+:root[data-theme="dark"] .probability-summary strong,
+:root[data-theme="dark"] .form-group label,
+:root[data-theme="dark"] .history-table td strong {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .topbar p,
+:root[data-theme="dark"] .page-title p,
+:root[data-theme="dark"] .card-heading p,
+:root[data-theme="dark"] .kpi-description,
+:root[data-theme="dark"] .camera-tip,
+:root[data-theme="dark"] .result-empty p,
+:root[data-theme="dark"] .calibration-note,
+:root[data-theme="dark"] .table-date,
+:root[data-theme="dark"] .form-group label {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .sidebar-toggle-button,
+:root[data-theme="dark"] .mobile-menu-button,
+:root[data-theme="dark"] .secondary-button {
+  border-color: #31425f;
+  background: #162238;
+  color: #d7e4f8;
+}
+
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .workflow-card,
+:root[data-theme="dark"] .camera-card,
+:root[data-theme="dark"] .result-card,
+:root[data-theme="dark"] .probability-control-card,
+:root[data-theme="dark"] .probability-result-card,
+:root[data-theme="dark"] .history-card,
+:root[data-theme="dark"] .kpi-card {
+  border-color: var(--line);
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .form-group input,
+:root[data-theme="dark"] .search-box {
+  border-color: #31425f;
+  background: #0e192b;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .registration-progress,
+:root[data-theme="dark"] .identified-person,
+:root[data-theme="dark"] .result-metric,
+:root[data-theme="dark"] .probability-summary div,
+:root[data-theme="dark"] .history-table th {
+  border-color: var(--line);
+  background: #0e192b;
+}
+
+:root[data-theme="dark"] .progress-step strong,
+:root[data-theme="dark"] .history-table th {
+  color: #aab8cc;
+}
+
+:root[data-theme="dark"] .progress-step-active strong {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .upload-zone {
+  border-color: #3a5d91;
+  background: #12223a;
+}
+
+:root[data-theme="dark"] .upload-zone strong,
+:root[data-theme="dark"] .upload-zone span {
+  color: #d7e4f8;
+}
+
+:root[data-theme="dark"] .info-panel,
+:root[data-theme="dark"] .message-box {
+  border-color: #314d78;
+  background: #12223a;
+  color: #aac4eb;
+}
+
+:root[data-theme="dark"] .probability-chart-modern {
+  border-color: #314d78;
+  background: linear-gradient(135deg, #12223a, #1b2140);
+}
+
+:root[data-theme="dark"] .probability-value strong {
+  color: #9ec1ff;
+}
+
+:root[data-theme="dark"] .history-table td {
+  border-bottom-color: #22314a;
+  color: #c2cddd;
+}
+
+:root[data-theme="dark"] .history-table tr:hover td {
+  background: #14223a;
+}
+
+:root[data-theme="dark"] .empty-table-state strong {
+  color: #d7e4f8;
+}
+
+@media (max-width: 768px) {
+  .logo .sidebar-toggle-button {
+    display: none;
+  }
+}
