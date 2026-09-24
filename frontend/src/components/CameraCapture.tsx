@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CameraCaptureProps {
   onCapture: (file: File) => void;
@@ -24,6 +24,22 @@ function CameraCapture({
     try {
       setError("");
 
+      if (!navigator.mediaDevices?.getUserMedia) {
+        setError(
+          "Este navegador no permite usar la cámara. Abre el sistema desde localhost o mediante HTTPS."
+        );
+        return;
+      }
+
+      if (!window.isSecureContext) {
+        setError(
+          "La cámara requiere una conexión segura. Usa http://localhost:5173 o HTTPS."
+        );
+        return;
+      }
+
+      detenerCamara();
+
       const stream =
         await navigator.mediaDevices.getUserMedia({
           video: true,
@@ -37,10 +53,41 @@ function CameraCapture({
       }
 
       setCameraActive(true);
-    } catch {
-      setError(
-        "No se pudo acceder a la cámara."
-      );
+    } catch (error) {
+      const cameraError = error as DOMException;
+
+      switch (cameraError.name) {
+        case "NotAllowedError":
+        case "PermissionDeniedError":
+          setError(
+            "Chrome bloqueó el acceso a la cámara. Haz clic en el candado de la barra de direcciones, permite la cámara y vuelve a intentarlo."
+          );
+          break;
+
+        case "NotFoundError":
+          setError(
+            "No se encontró ninguna cámara conectada al equipo."
+          );
+          break;
+
+        case "NotReadableError":
+        case "TrackStartError":
+          setError(
+            "La cámara está siendo utilizada por otra aplicación. Ciérrala y vuelve a intentarlo."
+          );
+          break;
+
+        case "OverconstrainedError":
+          setError(
+            "La cámara no es compatible con la configuración solicitada."
+          );
+          break;
+
+        default:
+          setError(
+            `No se pudo acceder a la cámara (${cameraError.name || "error desconocido"}).`
+          );
+      }
     }
   };
 
@@ -54,6 +101,13 @@ function CameraCapture({
     streamRef.current = null;
     setCameraActive(false);
   };
+
+  useEffect(() => {
+    return () => {
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    };
+  }, []);
 
   const capturarImagen = () => {
     if (!videoRef.current) {
