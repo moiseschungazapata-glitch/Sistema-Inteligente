@@ -21,6 +21,8 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "https://sistema-inteligente-kwd357dgt-grupo-31.vercel.app",
     ],
+    # Vercel crea una URL diferente para cada despliegue/preview del proyecto.
+    allow_origin_regex=r"https://sistema-inteligente-[a-z0-9-]+-grupo-31\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
