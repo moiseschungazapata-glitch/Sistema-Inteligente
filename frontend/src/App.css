@@ -1510,12 +1510,12 @@ body {
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --app-bg: #0a1220;
-  --surface: #111c2e;
-  --surface-muted: #162238;
+  --app-bg: #080f1c;
+  --surface: #121f33;
+  --surface-muted: #172840;
   --ink: #f4f7fb;
-  --muted: #9aa8bd;
-  --line: #263651;
+  --muted: #aebbd0;
+  --line: #2b4161;
   --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.18);
   --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.24);
 }
@@ -1527,8 +1527,8 @@ body {
 }
 
 :root[data-theme="dark"] .topbar {
-  background: rgba(15, 26, 44, 0.94);
-  border-bottom-color: var(--line);
+  background: rgba(12, 23, 40, 0.96);
+  border-bottom-color: #213653;
 }
 
 :root[data-theme="dark"] .topbar h1,
@@ -1556,6 +1556,12 @@ body {
   color: var(--muted);
 }
 
+:root[data-theme="dark"] .page-kicker,
+:root[data-theme="dark"] .card-eyebrow,
+:root[data-theme="dark"] .kpi-label {
+  color: #b4c1d5;
+}
+
 :root[data-theme="dark"] .sidebar-toggle-button,
 :root[data-theme="dark"] .mobile-menu-button,
 :root[data-theme="dark"] .secondary-button {
@@ -1573,7 +1579,39 @@ body {
 :root[data-theme="dark"] .history-card,
 :root[data-theme="dark"] .kpi-card {
   border-color: var(--line);
-  background: var(--surface);
+  background: linear-gradient(145deg, #14243b 0%, #101c2f 100%);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+}
+
+:root[data-theme="dark"] .kpi-card:hover {
+  border-color: #42628d;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.27);
+  transform: translateY(-2px);
+}
+
+:root[data-theme="dark"] .kpi-card .kpi-icon {
+  box-shadow: 0 9px 20px rgba(0, 0, 0, 0.38);
+}
+
+:root[data-theme="dark"] .kpi-description {
+  color: #b5c2d5;
+}
+
+:root[data-theme="dark"] .kpi-card::after {
+  opacity: 0.09;
+}
+
+:root[data-theme="dark"] .status,
+:root[data-theme="dark"] .page-title-badge {
+  border-color: #28543f;
+  background: #102b23;
+  color: #7de2ae;
+}
+
+:root[data-theme="dark"] .muted-badge {
+  border-color: #304c75;
+  background: #132643;
+  color: #a9c8ff;
 }
 
 :root[data-theme="dark"] .form-group input,
@@ -1630,6 +1668,14 @@ body {
 :root[data-theme="dark"] .history-table td {
   border-bottom-color: #22314a;
   color: #c2cddd;
+}
+
+:root[data-theme="dark"] .history-table tr:hover td {
+  background: #172a46;
+}
+
+:root[data-theme="dark"] .empty-table-state {
+  color: #aebbd0;
 }
 
 :root[data-theme="dark"] .history-table tr:hover td {
