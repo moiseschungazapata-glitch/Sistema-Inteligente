@@ -103,6 +103,21 @@ function CameraCapture({
   };
 
   useEffect(() => {
+    const video = videoRef.current;
+    const stream = streamRef.current;
+
+    if (cameraActive && video && stream) {
+      video.srcObject = stream;
+
+      video.play().catch(() => {
+        setError(
+          "La cámara está activa, pero el navegador no pudo iniciar la reproducción del video."
+        );
+      });
+    }
+  }, [cameraActive]);
+
+  useEffect(() => {
     return () => {
       streamRef.current?.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
