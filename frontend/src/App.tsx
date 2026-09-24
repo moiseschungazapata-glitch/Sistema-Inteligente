@@ -10,6 +10,12 @@ import "./App.css";
 
 function App() {
   const [pagina, setPagina] = useState("dashboard");
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
+  const cambiarPagina = (nuevaPagina: string) => {
+    setPagina(nuevaPagina);
+    setMenuAbierto(false);
+  };
 
   const renderizarPagina = () => {
     switch (pagina) {
@@ -35,7 +41,13 @@ function App() {
 
   return (
     <div className="app">
-      <aside className="sidebar">
+      <aside
+        className={
+          menuAbierto
+            ? "sidebar sidebar-open"
+            : "sidebar"
+        }
+      >
 
         <div className="logo">
           <div className="logo-icon">
@@ -56,7 +68,7 @@ function App() {
                 ? "nav-item active"
                 : "nav-item"
             }
-            onClick={() => setPagina("dashboard")}
+            onClick={() => cambiarPagina("dashboard")}
           >
             Dashboard
           </button>
@@ -67,7 +79,7 @@ function App() {
                 ? "nav-item active"
                 : "nav-item"
             }
-            onClick={() => setPagina("registro")}
+            onClick={() => cambiarPagina("registro")}
           >
             Registro facial
           </button>
@@ -78,7 +90,7 @@ function App() {
                 ? "nav-item active"
                 : "nav-item"
             }
-            onClick={() => setPagina("reconocimiento")}
+            onClick={() => cambiarPagina("reconocimiento")}
           >
             Reconocimiento
           </button>
@@ -89,7 +101,7 @@ function App() {
                 ? "nav-item active"
                 : "nav-item"
             }
-            onClick={() => setPagina("probabilidades")}
+            onClick={() => cambiarPagina("probabilidades")}
           >
             Probabilidades
           </button>
@@ -100,7 +112,7 @@ function App() {
                 ? "nav-item active"
                 : "nav-item"
             }
-            onClick={() => setPagina("historial")}
+            onClick={() => cambiarPagina("historial")}
           >
             Historial
           </button>
@@ -114,9 +126,31 @@ function App() {
 
       </aside>
 
+      {menuAbierto && (
+        <button
+          className="sidebar-overlay"
+          aria-label="Cerrar menú"
+          onClick={() => setMenuAbierto(false)}
+        />
+      )}
+
       <main className="main-content">
 
         <header className="topbar">
+
+          <button
+            className="mobile-menu-button"
+            aria-label={
+              menuAbierto
+                ? "Cerrar menú"
+                : "Abrir menú"
+            }
+            onClick={() =>
+              setMenuAbierto(!menuAbierto)
+            }
+          >
+            {menuAbierto ? "×" : "☰"}
+          </button>
 
           <div>
             <h1>Sistema Inteligente</h1>
