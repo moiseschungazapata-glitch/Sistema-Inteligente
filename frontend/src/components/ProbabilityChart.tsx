@@ -11,9 +11,10 @@ function ProbabilityChart({
   );
 
   return (
-    <div className="probability-chart">
+    <div className="probability-chart probability-chart-modern">
 
-      <div className="probability-value">
+      <div className="probability-chart-header">
+        <div className="probability-value">
         <strong>
           {percentage.toFixed(2)}%
         </strong>
@@ -21,6 +22,8 @@ function ProbabilityChart({
         <span>
           Probabilidad estimada
         </span>
+        </div>
+        <span className="probability-pulse" />
       </div>
 
       <div className="probability-bar">

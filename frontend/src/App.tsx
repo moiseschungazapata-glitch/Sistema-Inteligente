@@ -1,4 +1,12 @@
 import { useState } from "react";
+import {
+  Activity,
+  BarChart3,
+  History,
+  LayoutDashboard,
+  ScanFace,
+  UserRoundPlus,
+} from "lucide-react";
 
 import Dashboard from "./pages/Dashboard";
 import RegistroFacial from "./pages/RegistroFacial";
@@ -70,7 +78,8 @@ function App() {
             }
             onClick={() => cambiarPagina("dashboard")}
           >
-            Dashboard
+            <LayoutDashboard size={17} />
+            <span>Dashboard</span>
           </button>
 
           <button
@@ -81,7 +90,8 @@ function App() {
             }
             onClick={() => cambiarPagina("registro")}
           >
-            Registro facial
+            <UserRoundPlus size={17} />
+            <span>Registro facial</span>
           </button>
 
           <button
@@ -92,7 +102,8 @@ function App() {
             }
             onClick={() => cambiarPagina("reconocimiento")}
           >
-            Reconocimiento
+            <ScanFace size={17} />
+            <span>Reconocimiento</span>
           </button>
 
           <button
@@ -103,7 +114,8 @@ function App() {
             }
             onClick={() => cambiarPagina("probabilidades")}
           >
-            Probabilidades
+            <BarChart3 size={17} />
+            <span>Probabilidades</span>
           </button>
 
           <button
@@ -114,7 +126,8 @@ function App() {
             }
             onClick={() => cambiarPagina("historial")}
           >
-            Historial
+            <History size={17} />
+            <span>Historial</span>
           </button>
 
         </nav>
@@ -153,7 +166,13 @@ function App() {
           </button>
 
           <div>
-            <h1>Sistema Inteligente</h1>
+            <div className="topbar-title-row">
+              <span className="topbar-kicker">
+                <Activity size={13} />
+                Plataforma de análisis facial
+              </span>
+              <h1>Sistema Inteligente</h1>
+            </div>
 
             <p>
               Reconocimiento facial y análisis de probabilidades
@@ -162,7 +181,7 @@ function App() {
 
           <div className="status">
             <span className="status-dot"></span>
-            Sistema activo
+            <span>Sistema operativo</span>
           </div>
 
         </header>
